@@ -26,19 +26,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager){
-        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(
-                new AntPathRequestMatcher("/api/**"));
-        filter.setAuthenticationManager(authenticationManager);
-        return filter;
-    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Override
+    /* In memory authentication
+    *
+    *
+     */
+
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user")
@@ -57,18 +57,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Raw Password: mohana
                 .password("{pbkdf2}ffecb04c756bb26d0ceb29f9b0bca63a972d9fdfa11608fc82eb1e73dbdaab0d91a3be091112efd4")
                 .roles("USER");
-    }
+    }*/
 
+    /*
+    * These two methods are needed if custom filter needs to be implemented
+    *
+    *
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.addFilterBefore(restHeaderAuthFilter(authenticationManager()),
                 UsernamePasswordAuthenticationFilter.class).csrf().disable();
 
-        httpSecurity
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll();
-        httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();
 
     }
+
+    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager){
+        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(
+                new AntPathRequestMatcher("/api/**"));
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    } */
 
 }
