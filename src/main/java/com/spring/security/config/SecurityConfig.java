@@ -59,18 +59,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("USER");
     }*/
 
-    /*
-    * These two methods are needed if custom filter needs to be implemented
-    *
-    *
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.addFilterBefore(restHeaderAuthFilter(authenticationManager()),
-                UsernamePasswordAuthenticationFilter.class).csrf().disable();
-
+        //httpSecurity.addFilterBefore(restHeaderAuthFilter(authenticationManager()),
+          //      UsernamePasswordAuthenticationFilter.class).csrf().disable();
+        httpSecurity.authorizeRequests(
+                authorize -> {
+                    authorize.
+                            antMatchers("/h2-console/**").permitAll().
+                            mvcMatchers(HttpMethod.POST,
+                                    "/api/v1/security/customer/**").hasRole("ADMIN")
+                            .mvcMatchers(HttpMethod.GET,
+                                    "/api/v1/security/customer").permitAll();
+                }
+        ).authorizeRequests().anyRequest().authenticated()
+                .and().csrf().disable();
+        httpSecurity.headers().frameOptions().sameOrigin();
 
     }
 
+    /*
+    * Needed if custom filter needs to be implemented
+    *
+    *
     public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager){
         RestHeaderAuthFilter filter = new RestHeaderAuthFilter(
                 new AntPathRequestMatcher("/api/**"));

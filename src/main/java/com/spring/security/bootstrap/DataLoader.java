@@ -56,7 +56,7 @@ public class DataLoader implements CommandLineRunner {
                     .lastName("Varadharaja")
                     .dateOfBirth(LocalDate.of(1983, 05, 21))
                     .build());
-        Set<Authority> authorities = createAuthorities();
+        createAuthorities();
         //System.out.println("Admin Authority:"+authorities.stream().filter("ADMIN"::equals).findAny().orElse(null));
         //createUsers(authorities);
         /* BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -71,33 +71,11 @@ public class DataLoader implements CommandLineRunner {
         return customerService.saveCustomer(customer);
     }
 
-    private Set<User> createUsers(Set<Authority> authorities){
-        Set<User> users = new HashSet<>();
-        User user1 = userService.save(User.builder()
-                .userName("balaji")
-                .password("{bcrypt}"+bCryptPasswordEncoder.encode("vara"))
-                .authority(authorities.stream().filter("ADMIN"::equals).findAny().orElse(null))
-                .build());
-        User user2 = userService.save(User.builder()
-                .userName("pooja")
-                .password("{bcrypt}"+bCryptPasswordEncoder.encode("mohana"))
-                .authority(authorities.stream().filter("CUSTOMER"::equals).findAny().orElse(null))
-                .build());
-        User user3 = userService.save(User.builder()
-                .userName("user")
-                .password("{bcrypt}"+bCryptPasswordEncoder.encode("password"))
-                .authority(authorities.stream().filter("USER"::equals).findAny().orElse(null))
-                .build());
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        return users;
-    }
 
     private Set<Authority> createAuthorities(){
         Set<Authority> authorities = new HashSet<>();
         Authority authority1 = authorityService.save(Authority.builder()
-                .role("ADMIN")
+                .role("ROLE_ADMIN")
                 .build());
         userService.save(User.builder()
                 .userName("balaji")
@@ -105,7 +83,7 @@ public class DataLoader implements CommandLineRunner {
                 .authority(authority1)
                 .build());
         Authority authority2 = authorityService.save(Authority.builder()
-                .role("USER")
+                .role("ROLE_USER")
                 .build());
         User user2 = userService.save(User.builder()
                 .userName("pooja")
@@ -113,7 +91,7 @@ public class DataLoader implements CommandLineRunner {
                 .authority(authority2)
                 .build());
         Authority authority3= authorityService.save(Authority.builder()
-                .role("CUSTOMER")
+                .role("ROLE_CUSTOMER")
                 .build());
         userService.save(User.builder()
                 .userName("user")

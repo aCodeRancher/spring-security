@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@//localhost:1521/mathisipdb
-    username: training
-    password: training
+    url: jdbc:h2:mem:securitydb
+#    username: training
+#    password: training
   jpa:
     show-sql: true
     hibernate:
@@ -10,11 +10,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.Oracle10gDialect
-  security:
-    user:
-      name: user
-      password: password
+  h2:
+    console:
+      enabled: true
+#        dialect: org.hibernate.dialect.Oracle10gDialect
+#  security:
+#    user:
+#      name: user
+#      password: password
 logging:
   level:
     com:
