@@ -73,6 +73,7 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
         if (this.logger.isDebugEnabled()) {
             this.logger.debug(LogMessage.format("Set SecurityContextHolder to %s", authResult));
         }
+        chain.doFilter(request, response);
     }
 
     @Override
